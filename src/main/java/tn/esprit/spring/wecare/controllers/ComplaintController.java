@@ -10,6 +10,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,24 +27,36 @@ import tn.esprit.spring.wecare.entities.DuplicateComplainers;
 import tn.esprit.spring.wecare.entities.Entreprise;
 import tn.esprit.spring.wecare.entities.MostComplainer;
 import tn.esprit.spring.wecare.entities.statComplaint;
+import tn.esprit.spring.wecare.services.AnalyzeSentiment;
 import tn.esprit.spring.wecare.services.ComplaintServiceImpl;
+import tn.esprit.spring.wecare.services.models.confidenceScores;
+
 import java.io.*;
+import java.net.URISyntaxException;
+
 import okhttp3.*;
 
 @RestController
 @RequestMapping("/complaint")
 @Slf4j
+@CrossOrigin(origins="http://localhost:4200")
 public class ComplaintController {
 	
 	@Autowired
 	ComplaintServiceImpl complaintService;
+	@Autowired
+	AnalyzeSentiment sentimentService;
 	
 	//http://localhost:8089/wecare/complaint/create-complaint/1
 		@PostMapping("/create-complaint/{idUser}") 
-		public String createComplaintAndAsseigntoUser(@RequestBody Complaint c ,@PathVariable Long idUser) throws IOException
+		public confidenceScores createComplaintAndAsseigntoUser(@RequestBody Complaint c ,@PathVariable Long idUser) throws IOException, URISyntaxException
 		 {
+			log.info(c.getComplaintDescription());
+
 			
-			return complaintService.createComplaintAndAsseigntoUser(c, idUser);
+
+			return complaintService.createComplaintAndAsseigntoUser(c, idUser) ;
+	
 		}
 		
 		
@@ -77,7 +90,7 @@ public class ComplaintController {
 		}
 		
 //		@GetMapping("/emotions") 
-//		public void emotionComplaint(@RequestBody String description) throws IOException
+//		public void AnalyzeSentiment(@RequestBody String description) throws IOException
 //		 {
 //
 //	    

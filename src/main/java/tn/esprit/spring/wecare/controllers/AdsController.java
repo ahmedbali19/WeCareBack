@@ -10,6 +10,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,15 @@ import tn.esprit.spring.wecare.entities.statComplaint;
 import tn.esprit.spring.wecare.services.AdsServiceImpl;
 import tn.esprit.spring.wecare.services.ComplaintServiceImpl;
 import java.io.*;
+import java.sql.SQLException;
+
 import okhttp3.*;
 
 @RestController
 @RequestMapping("/ads")
 @Slf4j
+@CrossOrigin(origins="http://localhost:4200")
+
 public class AdsController {
 	
 	@Autowired
@@ -61,10 +66,18 @@ public class AdsController {
 		
 		//http://localhost:8089/wecare/ads/get-ad-by-id/{ad-id}
 		@GetMapping("/get-ad-by-id/{ad-id}")
-		public Ads getAdById(@PathVariable("complaint-id") Long id){
+		public Ads getAdById(@PathVariable("ad-id") Long id){
 			Ads c= adService.getAdById(id);
 			return c;
 		}
+		
+	//http://localhost:8089/wecare/ads/get-scheduled-ad-by-id/
+				@GetMapping("/get-scheduled-ad-by-id/")
+				public Ads getAdById( ) throws SQLException{
+					Ads c= adService.getAdByIdScheduled();
+					return c;
+				}
+
 		//http://localhost:8089/wecare/complaint/delete-ad/{ad-id}
 		@DeleteMapping("/delete-ad/{ad-id}")
 		public void deleteAd(@PathVariable("ad-id")Long id) {

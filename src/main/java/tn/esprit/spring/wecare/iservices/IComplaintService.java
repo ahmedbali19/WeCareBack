@@ -8,10 +8,11 @@ import tn.esprit.spring.wecare.entities.Ads;
 import tn.esprit.spring.wecare.entities.Complaint;
 import tn.esprit.spring.wecare.entities.DuplicateComplainers;
 import tn.esprit.spring.wecare.entities.MostComplainer;
+import tn.esprit.spring.wecare.services.models.confidenceScores;
 
 public interface IComplaintService {
 
-	public String createComplaintAndAsseigntoUser(Complaint c, Long idUser) throws IOException;
+	public confidenceScores createComplaintAndAsseigntoUser(Complaint c, Long idUser) throws IOException;
 	public Complaint createComplaintAndAsseigntoAd(Complaint c, Long idAd);
 
 	public List<Complaint> getAllComplaint();
